@@ -1,0 +1,8 @@
+<div class="todos">
+  <h2 class="todos__title">{{ title }}</h2>
+  <app-todo-input
+    (onAddTask)="addTodo($event)"
+  ></app-todo-input>
+  <app-todo-list [tasks]="todos"></app-todo-list>
+</div>
+

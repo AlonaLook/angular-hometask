@@ -1,0 +1,75 @@
+@import "../../../../../../styles/variables";
+@import "../../../../../../styles/mixins";
+$img-path: '../../../../../../assets/images/';
+
+.todo-item{
+  position: relative;
+  min-height: 40px;
+  padding: 0 35px 0 0;
+  border-bottom: 1px solid $silver-color;
+  display: flex;align-items: center;
+  font-size: 1.1rem;
+
+  &--done{
+    text-decoration: line-through;
+    color: $dodger-blue-color;
+
+  }
+
+  &__stateDone{
+    display: none;
+
+    &:checked{
+      & + label{
+        &:before{
+          content: '';
+          border: 1px solid $dodger-blue-color;
+          background-image: url($img-path + "checked.svg");
+          background-repeat: no-repeat;
+          background-size: 80% 80%;
+          background-position: center;
+        }
+      }
+    }
+  }
+
+  &__label{
+    position: relative;
+    padding: 0 0 0 25px;
+    line-height: 18px;
+
+    &:before{
+      position: absolute;
+      content: '';
+      width: 15px;
+      height: 15px;
+      border-radius: 3px;
+      border: 1px solid $silver-color;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &__btn{
+
+    &--remove{
+      @include creatorBtnStyle(right, 10px, $scarlet-color, $img-path + "close.svg", $persian-red-color);
+    }
+
+    &--edit{
+      @include creatorBtnStyle(right, 40px, $silver-color, $img-path + "edit.svg", $dove-gray-color);
+    }
+  }
+
+  &__edit-item{
+    border: none;
+    font-size: 1.1rem;
+    text-decoration: none;
+
+    &:focus{
+      outline: none;
+      outline-offset: 0;
+    }
+  }
+}

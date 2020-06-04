@@ -1,0 +1,8 @@
+<ul class="todo-list"
+  [ngClass]="{ 'todo-list--active': tasks.length > 0 }"
+>
+  <app-todo-item
+    *ngFor="let item of tasks"
+    [task]="item"
+  ></app-todo-item>
+</ul>

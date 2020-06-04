@@ -1,0 +1,16 @@
+@import "../../../styles/variables";
+.header{
+  display: flex;
+  align-items: center;
+  background-color: $forest-green-color;
+  min-height: 60px;
+
+  &__container{
+
+    &--row{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}

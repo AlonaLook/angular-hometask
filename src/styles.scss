@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+@import "styles/variables";
+@import "styles/fonts";
+@import "styles/base";
+
+//General
+.container{
+  width: 80vw;
+  margin: 0 auto;
+}

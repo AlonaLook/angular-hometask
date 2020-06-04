@@ -1,0 +1,10 @@
+@import "../../../../../styles/variables";
+
+.todo-list{
+  background-color: $primary-light-color;
+  border-radius: 5px;
+
+  &--active{
+    padding: 10px;
+  }
+}
