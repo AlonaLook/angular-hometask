@@ -1,4 +1,49 @@
+@import "../../styles/variables";
 .content{
   min-height: 100%;
-  padding-bottom: 60px;
+  padding: 30px 0 60px;
+
+  &__title{
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+}
+
+.user{
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  &__input{
+    width: calc(100% - 123px);
+    display: inline-block;
+  }
+
+  &__btn{
+    margin-left: 2px;
+    width: 121px;
+  }
+}
+
+.info{
+  font-size: 1.2rem;
+}
+
+.details{
+
+  &__text{
+    padding-top: 10px;
+    margin-bottom: 0;
+  }
+}
+
+.numbers{
+
+  &__item{
+    padding: 5px;
+    &--light{
+      color: $primary-light-color;
+    }
+  }
 }
