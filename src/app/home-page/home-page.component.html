@@ -13,17 +13,16 @@
       autofocus
       placeholder="Please type user name"
       [(ngModel)]="userName"
-      (input)="getUserName($event)"
     >
     <button
       class="btn btn-dark user__btn"
-      [disabled]="!isUser"
+      [disabled]="!userName.length"
       (click)="onReset()"
     >
       Reset name
     </button>
   </div>
-  <p class="info" *ngIf="isUser">
+  <p class="info" *ngIf="userName">
     <b>User name is: </b>{{ userName }}
   </p>
 
