@@ -1,0 +1,8 @@
+<ul class="list-group pt-2 pb-2">
+  <app-shopping-list-item
+    *ngFor="let purchase of purchases"
+    [purchase]="purchase"
+    (onClonePurchase)="cloneItem($event)"
+    (onRemovePurchase)="removeItem($event)"
+  ></app-shopping-list-item>
+</ul>

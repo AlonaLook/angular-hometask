@@ -1,1 +1,15 @@
-<app-home-page></app-home-page>
+<div class="container">
+  <h1 class="text-center">{{ title }}</h1>
+
+  <div class="mb-2">
+    <app-shopping-form
+      (onAddItem)="addItem($event)"
+    ></app-shopping-form>
+  </div>
+
+  <app-shopping-list
+    [purchases]="listPurchases"
+    (onClonePurchase)="cloneItem($event)"
+    (onRemovePurchase)="removeItem($event)"
+  ></app-shopping-list>
+</div>

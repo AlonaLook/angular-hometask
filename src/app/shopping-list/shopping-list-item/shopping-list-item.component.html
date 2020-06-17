@@ -1,0 +1,23 @@
+<li class="list-group-item">
+  <div class="mb-1">
+    {{ purchase.title + ' - '}}
+    <span>
+      {{ purchase.count }}
+      {{ purchase.count > 1 ? 'items' : 'item'}}
+    </span>
+  </div>
+  <div class="wrapper-btn">
+    <button
+      class="btn btn-info"
+      (click)="cloneItem()"
+    >
+      Clone
+    </button>
+    <button
+      class="btn btn-danger ml-1"
+      (click)="removeItem()"
+    >
+      Remove
+    </button>
+  </div>
+</li>
