@@ -1,0 +1,16 @@
+.input-item{
+  &:invalid + .btn--custom{
+    background: #ccc;
+    border-color: #ccc;
+    box-shadow: none;
+    opacity: 0.5;
+    cursor: auto;
+  }
+
+  &:valid + .btn--custom{
+    background: #007BFF;
+    border: #007BFF;
+    cursor: pointer;
+    opacity: 1;
+  }
+}

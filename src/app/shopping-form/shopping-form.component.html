@@ -1,16 +1,18 @@
  <input
    type="text"
-   class="form-control mb-2"
+   class="form-control mb-2 input-item"
    placeholder="Please enter new purchase..."
+   required
    #inputTitle
  >
  <input
-   type="text" class="form-control mb-2"
+   type="text" class="form-control mb-2 input-item"
    placeholder="Please enter count of your purchase..."
+   required
    #inputCount
  >
  <button
-   class="btn btn-primary"
+   class="btn btn-primary btn--custom"
    (click)="addPurchase()"
  >
    Add purchase
