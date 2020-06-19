@@ -1,1 +1,36 @@
-<app-home-page></app-home-page>
+<div class="container">
+  <div class="mb-2">
+    <label for="focusedInput">Autofocus</label>
+    <input
+      appAutoFocus
+      type="text"
+      id="focusedInput"
+      class="form-control"
+    >
+  </div>
+
+  <div class="mb-2">
+    <label for="hover">Hover</label>
+    <input
+      type="text"
+      id="hover"
+      class="form-control"
+      placeholder="Hover me..."
+      [appHover]="{'fontSize': '1.5rem', 'borderColor': 'red'}"
+    >
+  </div>
+
+  <div class="mb-2">
+    <label for="hover">Hide button</label>
+    <input
+      type="text"
+      id="hide"
+      class="form-control mb-2"
+      placeholder="Please enter some text..."
+      [(ngModel)]="text"
+    >
+    <button class="btn btn-dark" *appIfVisible="text.length > 0 && true">I am visible;))</button>
+  </div>
+
+</div>
+
