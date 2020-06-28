@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingListItemComponent } from './shopping-list/shopping-list-item/shopping-list-item.component';
 import { ShoppingFormComponent } from './shopping-form/shopping-form.component';
+import {ShoppingService} from './services/shopping.service';
 
 
 
@@ -21,7 +22,9 @@ import { ShoppingFormComponent } from './shopping-form/shopping-form.component';
     BrowserModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    ShoppingService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

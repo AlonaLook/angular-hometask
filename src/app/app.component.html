@@ -3,13 +3,10 @@
 
   <div class="mb-2">
     <app-shopping-form
-      (onAddItem)="addItem($event)"
     ></app-shopping-form>
   </div>
 
   <app-shopping-list
-    [purchases]="listPurchases"
-    (onClonePurchase)="cloneItem($event)"
-    (onRemovePurchase)="removeItem($event)"
+    [purchases]="shoppingService.listPurchases"
   ></app-shopping-list>
 </div>

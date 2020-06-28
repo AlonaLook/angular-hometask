@@ -1,14 +1,27 @@
 <li class="list-group-item">
-  <div class="mb-1">
-    {{ purchase.title + ' - '}}
-    <span>
-      {{ purchase.count }}
-      {{ purchase.count > 1 ? 'items' : 'item'}}
-    </span>
+  <div class="mb-1" *ngIf="purchase.isEdited; else inputBlock">
+    <input
+      type="text"
+      class="form-control form-control--inline-box"
+      [(ngModel)]="purchase.title"
+    >
+    <button
+      class="btn btn-primary ml-1"
+      (click)="saveChanges()"
+    >
+      Save
+    </button>
   </div>
   <div class="wrapper-btn">
     <button
-      class="btn btn-info"
+      class="btn btn-success"
+      (click)="editItem()"
+      (blur)=" purchase.isEdited = false "
+    >
+      Edit
+    </button>
+    <button
+      class="btn btn-info ml-1"
       (click)="cloneItem()"
     >
       Clone
@@ -20,4 +33,12 @@
       Remove
     </button>
   </div>
+  <ng-template #inputBlock>
+    {{ purchase.title + ' - '}}
+    <span>
+      {{ purchase.count }}
+      {{ purchase.count > 1 ? 'items' : 'item'}}
+    </span>
+  </ng-template>
 </li>
+

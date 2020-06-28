@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {IPurchase} from '../../interfaces/purchase.interface';
+import {ShoppingService} from '../../services/shopping.service';
 
 @Component({
   selector: 'app-shopping-list-item',
@@ -8,14 +9,22 @@ import {IPurchase} from '../../interfaces/purchase.interface';
 })
 export class ShoppingListItemComponent {
   @Input() purchase: IPurchase;
-  @Output()onClonePurchase: EventEmitter<number> = new EventEmitter<number>();
-  @Output()onRemovePurchase: EventEmitter<number> = new EventEmitter<number>();
+
+  constructor(private shoppingService: ShoppingService ) {}
+
+  editItem() {
+    this.shoppingService.editItem(this.purchase.id);
+  }
+
+  saveChanges() {
+    this.shoppingService.saveChanges(this.purchase.id);
+  }
 
   cloneItem() {
-    this.onClonePurchase.emit(this.purchase.id);
+    this.shoppingService.cloneItem(this.purchase.id);
   }
 
   removeItem() {
-    this.onRemovePurchase.emit(this.purchase.id);
+    this.shoppingService.removeItem(this.purchase.id);
   }
 }
