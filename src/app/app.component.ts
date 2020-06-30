@@ -8,5 +8,5 @@ import {ShoppingService} from './services/shopping.service';
 })
 export class AppComponent {
   title = 'Shopping list';
-  constructor(private shoppingService: ShoppingService) {}
+  constructor(public shoppingService: ShoppingService) {}
 }
