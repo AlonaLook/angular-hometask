@@ -16,7 +16,6 @@
     <button
       class="btn btn-success"
       (click)="editItem()"
-      (blur)=" purchase.isEdited = false "
     >
       Edit
     </button>
@@ -37,7 +36,7 @@
     {{ purchase.title + ' - '}}
     <span>
       {{ purchase.count }}
-      {{ purchase.count > 1 ? 'items' : 'item'}}
+      {{ purchase.count === 1 ? 'item' : 'items'}}
     </span>
   </ng-template>
 </li>

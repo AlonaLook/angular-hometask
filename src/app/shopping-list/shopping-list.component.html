@@ -1,6 +1,13 @@
-<ul class="list-group pt-2 pb-2">
-  <app-shopping-list-item
-    *ngFor="let purchase of purchases"
-    [purchase]="purchase"
-  ></app-shopping-list-item>
+<ul class="list-group pb-2">
+  <li
+    class="list-group-item"
+    *ngFor="let purchase of purchases; let i = index"
+  >
+    <a
+      class="nav-link"
+      [routerLink]="['/shopping-list-item', purchase.id , purchase.title, purchase.count]"
+    >
+      {{i + 1}}) {{ purchase.title }} {{ purchase.count }} {{purchase.count === 1 ? 'item' : 'items'}}
+    </a>
+  </li>
 </ul>

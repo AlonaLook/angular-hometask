@@ -1,12 +1,50 @@
 <div class="container">
   <h1 class="text-center">{{ title }}</h1>
 
-  <div class="mb-2">
-    <app-shopping-form
-    ></app-shopping-form>
+  <nav>
+    <ul class="nav nav-tabs">
+      <li
+        class="nav-item"
+        role="presentation"
+      >
+        <a
+          routerLink=""
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="nav-link"
+        >
+          Home
+        </a>
+      </li>
+      <li
+          class="nav-item"
+          role="presentation"
+      >
+        <a
+          routerLink="add-purchase"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          Add Purchase
+        </a>
+      </li>
+      <li
+        class="nav-item"
+        role="presentation"
+      >
+        <a
+          routerLink="shopping-list"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          Shopping List
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div>
+    <router-outlet></router-outlet>
   </div>
 
-  <app-shopping-list
-    [purchases]="shoppingService.listPurchases"
-  ></app-shopping-list>
 </div>
