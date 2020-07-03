@@ -1,0 +1,26 @@
+<div
+  class="jumbotron ml-2"
+  *ngIf="isEdit; else notAllowedEdition"
+>
+  <div class="form-group">
+    <label for="title">Name:</label>
+    <input
+      type="text"
+      id="title"
+      class="form-control"
+      [(ngModel)]="purchase.title"
+    >
+  </div>
+  <div class="form-group">
+    <label for="count">Count:</label>
+    <input
+      type="text"
+      id="count"
+      class="form-control"
+      [(ngModel)]="purchase.count"
+    >
+  </div>
+</div>
+<ng-template #notAllowedEdition>
+  <strong>Sorry, an edition is not allowed!</strong>
+</ng-template>

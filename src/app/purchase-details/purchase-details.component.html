@@ -1,0 +1,9 @@
+<div class="jumbotron ml-2 text-center pl-4 pr-4">
+  <p class="card-title">Name: {{ purchase.title }}</p>
+  <p class="card-title">Count: {{ purchase.count }}</p>
+  <a
+    class="btn btn-primary"
+    [routerLink]="['edit']"
+    [queryParams]="{ allowEdit: idx % 2 === 0 ? 1 : 0 }"
+  >Edit</a>
+</div>

@@ -1,13 +1,18 @@
-<ul class="list-group pb-2">
-  <li
-    class="list-group-item"
-    *ngFor="let purchase of purchases; let i = index"
-  >
-    <a
-      class="nav-link"
-      [routerLink]="['/shopping-list-item', purchase.id , purchase.title, purchase.count]"
+<div class="row justify-content-between">
+  <ul class="list-group pb-2 flex-grow-1">
+    <li
+      class="list-group-item"
+      *ngFor="let purchase of purchases"
     >
-      {{i + 1}}) {{ purchase.title }} {{ purchase.count }} {{purchase.count === 1 ? 'item' : 'items'}}
-    </a>
-  </li>
-</ul>
+      <a
+        class="nav-link"
+        [routerLink]="['/shopping-list', purchase.id]"
+      >
+        {{ purchase.title }} {{ purchase.count }} {{purchase.count === 1 ? 'item' : 'items'}}
+      </a>
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>
+</div>
+
