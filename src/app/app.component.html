@@ -1,4 +1,18 @@
 <div class="container">
+  <div class="text-right pt-2">
+    <button
+      *ngIf="!isAuth"
+      class="btn btn-primary"
+      (click)="login()"
+    >
+      Login
+    </button>
+    <button
+      *ngIf="isAuth"
+      class="btn btn-dark"
+      (click)="logout()"
+    >Logout</button>
+  </div>
   <h1 class="text-center">{{ title }}</h1>
 
   <nav>

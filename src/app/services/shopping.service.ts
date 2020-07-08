@@ -36,4 +36,13 @@ export class ShoppingService {
       return curValue.id === id ? (acc + index) : acc;
     }, 0);
   }
+
+  updateItem(id: number, title: string, count: number) {
+    this.listPurchases = this.listPurchases.reduce( (acc, curVal) => {
+      const item = curVal.id === id
+        ?  { ...curVal, title, count }
+        : curVal;
+      return [...acc, item];
+    }, []);
+  }
 }

@@ -2,7 +2,7 @@
   <ul class="list-group pb-2 flex-grow-1">
     <li
       class="list-group-item"
-      *ngFor="let purchase of purchases"
+      *ngFor="let purchase of shoppingService.listPurchases"
     >
       <a
         class="nav-link"

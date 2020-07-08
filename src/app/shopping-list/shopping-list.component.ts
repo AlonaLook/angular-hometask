@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {IPurchase} from '../interfaces/purchase.interface';
+import {Component} from '@angular/core';
 import {ShoppingService} from '../services/shopping.service';
 
 @Component({
@@ -7,14 +6,9 @@ import {ShoppingService} from '../services/shopping.service';
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.scss']
 })
-export class ShoppingListComponent implements OnInit {
-  purchases: IPurchase[] = [];
+export class ShoppingListComponent {
 
   constructor(
-    private shoppingService: ShoppingService,
+    public shoppingService: ShoppingService
   ) {}
-
-  ngOnInit(): void {
-    this.purchases = this.shoppingService.listPurchases;
-  }
 }

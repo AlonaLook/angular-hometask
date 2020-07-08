@@ -15,9 +15,11 @@ export class PurchaseDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private shoppingService: ShoppingService) { }
 
   ngOnInit(): void {
+    this.route.data.subscribe((params: Params) => {
+      this.purchase = params.purchase;
+    });
     this.route.params.subscribe((params: Params) => {
       const id: number = Number(params.id);
-      this.purchase = this.shoppingService.searchItem(id);
       this.idx = this.shoppingService.getIndexById(id);
     });
   }
