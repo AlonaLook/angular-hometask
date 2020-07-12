@@ -1,3 +1,21 @@
-<li class="bg-secondary text-white list-group-item">
-  {{ number }}
-</li>
+<ng-container *ngIf="!!oddNumbers.length">
+  <h3 class="text-center border-bottom mb-3">Odd numbers list</h3>
+  <div
+    *ngIf="!allowTextShow"
+    class="text-center bg-success pt-2 pb-2 mb-1"
+  >
+    Text in <strong>Odd component</strong>
+  </div>
+  <button
+    class="btn btn-outline-info mb-1"
+    (click)="showEven()"
+  >
+    Show text in even component
+  </button>
+</ng-container>
+
+<ul class="list-group">
+  <li class="bg-secondary text-white list-group-item" *ngFor="let number of oddNumbers">
+    {{ number }}
+  </li>
+</ul>

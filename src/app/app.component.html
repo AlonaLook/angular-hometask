@@ -1,24 +1,11 @@
 <div class="container">
   <!--Control-->
   <app-control
-    (onIncrement)="onAddNumber($event)"
   ></app-control>
 
-  <!--List numbers-->
-  <ul class="list-group">
-    <ng-container
-      *ngFor="let number of numbers"
-    >
-      <ng-container *ngIf="number % 2 === 0">
-        <app-even
-          [number]="number"
-        ></app-even>
-      </ng-container>
-      <ng-container *ngIf="number % 2 === 1">
-        <app-odd [number]="number"></app-odd>
-      </ng-container>
-    </ng-container>
-  </ul>
+  <!--Lists of numbers-->
+  <app-odd></app-odd>
+  <app-even></app-even>
 </div>
 
 
