@@ -16,7 +16,7 @@ export class ObservableCounterService {
     this.observable = new Observable(observer => {
       this.interval = setInterval(() => {
         observer.next(this.counter);
-        this.counter ++;
+        this.counter++;
 
         if (this.counter >= 10) {
           observer.complete();
