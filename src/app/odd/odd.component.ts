@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ObservableCounterService} from '../services/observable-counter.service';
 import {ObservableTextService} from '../services/observable-text.service';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-odd',
@@ -25,9 +26,11 @@ export class OddComponent implements OnInit, OnDestroy {
       this.allowTextShow = value;
     });
 
-    this.subscription = this.observableCounterService.counterSubjectOdd.subscribe(
+    this.subscription = this.observableCounterService.observable.subscribe(
       (val) => {
-        this.oddNumbers = [...this.oddNumbers, val];
+        if ( val % 2 === 1) {
+          this.oddNumbers = [...this.oddNumbers, val];
+        }
       },
       (e) => console.log(e.message),
       () => console.log('Completed!')

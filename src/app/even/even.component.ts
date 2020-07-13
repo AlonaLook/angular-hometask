@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ObservableCounterService} from '../services/observable-counter.service';
 import { Subscription } from 'rxjs';
 import {ObservableTextService} from '../services/observable-text.service';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-even',
@@ -25,9 +26,11 @@ export class EvenComponent implements OnInit, OnDestroy {
       this.allowTextShow = value;
     });
 
-    this.subscription = this.observableCounterService.counterSubjectEven.subscribe(
+    this.subscription = this.observableCounterService.observable.subscribe(
       (val) => {
-        this.evenNumbers = [...this.evenNumbers, val];
+        if (val % 2 === 0) {
+          this.evenNumbers = [...this.evenNumbers, val];
+        }
     },
       (e) => console.log(e.message),
       () => console.log('Completed!')
