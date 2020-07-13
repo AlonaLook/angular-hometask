@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {ObservableCounterService} from '../services/observable-counter.service';
-import {Subscription} from 'rxjs';
+
 
 @Component({
   selector: 'app-control',

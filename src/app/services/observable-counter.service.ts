@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,15 +8,20 @@ export class ObservableCounterService {
   interval: any;
   counter = 0;
   observable: Observable<number>;
-  // counterSubject = new Subject<number>();
+  subject: Subject<boolean> = new BehaviorSubject(false);
 
   constructor() {}
 
   start() {
-      this.observable = new Observable<number>(observer => {
-        this.interval = setInterval(() => {
+    this.subject.next(true);
+
+    this.observable = new Observable(observer => {
+      observer.next(this.counter);
+
+      this.interval = setInterval(() => {
           this.counter ++;
           observer.next(this.counter);
+
           if (this.counter >= 10) {
             observer.complete();
           }
@@ -27,5 +31,6 @@ export class ObservableCounterService {
 
   stop() {
     clearInterval(this.interval);
+    this.subject.next(false);
   }
 }

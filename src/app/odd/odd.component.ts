@@ -2,7 +2,6 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ObservableCounterService} from '../services/observable-counter.service';
 import {ObservableTextService} from '../services/observable-text.service';
-import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-odd',
@@ -11,6 +10,7 @@ import {filter} from 'rxjs/operators';
 })
 export class OddComponent implements OnInit, OnDestroy {
   subscription: Subscription;
+  subscriptionObservable: Subscription;
   subscriptionText: Subscription;
 
   oddNumbers: number[] = [];
@@ -26,14 +26,21 @@ export class OddComponent implements OnInit, OnDestroy {
       this.allowTextShow = value;
     });
 
-    this.subscription = this.observableCounterService.observable.subscribe(
-      (val) => {
-        if ( val % 2 === 1) {
-          this.oddNumbers = [...this.oddNumbers, val];
+    this.subscription = this.observableCounterService.subject.subscribe(
+      val => {
+        console.log('subject value', val);
+        if (val) {
+          this.subscriptionObservable = this.observableCounterService.observable.subscribe(
+            num => {
+              this.oddNumbers = num % 2 === 1 ? [...this.oddNumbers, num] : this.oddNumbers;
+            },
+            (e) => console.log(e.message),
+            () => console.log('Completed!')
+          );
+         } else {
+            this.handleUnsubscription();
         }
-      },
-      (e) => console.log(e.message),
-      () => console.log('Completed!')
+      }
     );
   }
 
@@ -44,5 +51,11 @@ export class OddComponent implements OnInit, OnDestroy {
 
   showEven() {
     this.observableTextService.showEven();
+  }
+
+  handleUnsubscription() {
+    if (this.subscriptionObservable) {
+      this.subscriptionObservable.unsubscribe();
+    }
   }
 }

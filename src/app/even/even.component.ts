@@ -2,7 +2,6 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ObservableCounterService} from '../services/observable-counter.service';
 import { Subscription } from 'rxjs';
 import {ObservableTextService} from '../services/observable-text.service';
-import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-even',
@@ -11,6 +10,7 @@ import {filter} from 'rxjs/operators';
 })
 export class EvenComponent implements OnInit, OnDestroy {
   subscription: Subscription;
+  subscriptionObservable: Subscription;
   subscriptionText: Subscription;
 
   evenNumbers: number[] = [];
@@ -26,14 +26,22 @@ export class EvenComponent implements OnInit, OnDestroy {
       this.allowTextShow = value;
     });
 
-    this.subscription = this.observableCounterService.observable.subscribe(
-      (val) => {
-        if (val % 2 === 0) {
-          this.evenNumbers = [...this.evenNumbers, val];
+    this.subscription = this.observableCounterService.subject.subscribe(
+      val => {
+        console.log('subject value', val);
+        if (val) {
+          this.subscriptionObservable = this.observableCounterService.observable.subscribe(
+            num => {
+              console.log('num', num);
+              this.evenNumbers = num % 2 === 0 ? [...this.evenNumbers, num] : this.evenNumbers;
+            },
+            (e) => console.log(e.message),
+               () => console.log('Completed!')
+          );
+        } else {
+          this.handleUnsubscription();
         }
-    },
-      (e) => console.log(e.message),
-      () => console.log('Completed!')
+      }
     );
   }
 
@@ -44,5 +52,11 @@ export class EvenComponent implements OnInit, OnDestroy {
 
   showOdd() {
     this.observableTextService.showOdd();
+  }
+
+  handleUnsubscription() {
+    if (this.subscriptionObservable) {
+      this.subscriptionObservable.unsubscribe();
+    }
   }
 }
