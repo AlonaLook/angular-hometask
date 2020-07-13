@@ -28,7 +28,6 @@ export class OddComponent implements OnInit, OnDestroy {
 
     this.subscription = this.observableCounterService.subject.subscribe(
       val => {
-        console.log('subject value', val);
         if (val) {
           this.subscriptionObservable = this.observableCounterService.observable.subscribe(
             num => {

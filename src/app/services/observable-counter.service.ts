@@ -6,27 +6,26 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 })
 export class ObservableCounterService {
   interval: any;
-  counter = 0;
+  counter = 1;
   observable: Observable<number>;
   subject: Subject<boolean> = new BehaviorSubject(false);
 
   constructor() {}
 
   start() {
-    this.subject.next(true);
-
     this.observable = new Observable(observer => {
-      observer.next(this.counter);
-
       this.interval = setInterval(() => {
-          this.counter ++;
-          observer.next(this.counter);
+        observer.next(this.counter);
+        this.counter ++;
 
-          if (this.counter >= 10) {
-            observer.complete();
-          }
+        if (this.counter >= 10) {
+          observer.complete();
+        }
+
         }, 1000);
       });
+
+    this.subject.next(true);
   }
 
   stop() {

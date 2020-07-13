@@ -28,11 +28,9 @@ export class EvenComponent implements OnInit, OnDestroy {
 
     this.subscription = this.observableCounterService.subject.subscribe(
       val => {
-        console.log('subject value', val);
         if (val) {
           this.subscriptionObservable = this.observableCounterService.observable.subscribe(
             num => {
-              console.log('num', num);
               this.evenNumbers = num % 2 === 0 ? [...this.evenNumbers, num] : this.evenNumbers;
             },
             (e) => console.log(e.message),
