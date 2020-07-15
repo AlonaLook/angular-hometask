@@ -1,1 +1,124 @@
-<app-home-page></app-home-page>
+<div class="container mb-2">
+  <h1 class="text-center">Forms validation in Angular</h1>
+  <form (ngSubmit)="onSubmit()" #form="ngForm">
+    <div class="form-group">
+      <label for="name">User name</label>
+      <input type="text"
+             class="form-control"
+             id="name"
+             name="name"
+             ngModel
+             required
+             #name="ngModel"
+             [ngStyle]="{'border': name.valid && name.touched && name.value.length < 3 ? '1px solid red': null}"
+      >
+      <!--Text for invalid name-->
+      <small class="text-danger"
+             *ngIf="name.invalid && name.touched && name.value.length <= 0"
+      >
+        Name can not be empty string!
+      </small>
+      <!--Text for valid but very short name-->
+      <small class="text-danger"
+             *ngIf="name.valid && name.touched && name.value.length < 3"
+      >
+        Name is  very short.
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email"
+             class="form-control"
+             id="email"
+             name="email"
+             ngModel
+             required
+             email
+             #email="ngModel"
+      >
+      <!--Text for invalid email-->
+      <small class="text-danger"
+             *ngIf="email.invalid && email.touched"
+      >
+        Email is invalid!
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password"
+             class="form-control"
+             id="password"
+             name="password"
+             ngModel
+             required
+             #password="ngModel"
+             [ngStyle]="{'border': password.valid && password.touched && password.value.length < 6 ? '1px solid red' : null}"
+      >
+      <!--Text for invalid password-->
+      <small class="text-danger"
+             *ngIf="password.invalid && password.touched"
+      >
+        Password is invalid!
+      </small>
+      <!--Text for password which has less than 6 characters length-->
+      <small class="text-danger"
+             *ngIf="password.valid && password.touched && password.value.length < 6"
+      >
+        Password should have no less than 6 characters!
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="survey">Select your job title</label>
+      <select class="form-control"
+              id="survey"
+              name="survey"
+              [ngModel]="defaultTitle"
+              required
+              #select='ngModel'
+      >
+        <option value="student">Student</option>
+        <option value="junior">Junior</option>
+        <option value="middle">Middle</option>
+
+      </select>
+      <!--Text for invalid select-->
+      <small class="text-danger"
+             *ngIf="select.invalid && select.touched"
+      >
+        Select is invalid!
+      </small>
+    </div>
+    <!--Submit button-->
+    <button type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid || (form.invalid && form.touched)"
+    >
+      Send</button>
+  </form>
+
+  <!--Text for invalid form-->
+  <small class="text-danger pt-2" *ngIf="form.invalid && form.touched">
+    Sorry, you can not send form, because it's invalid.
+    Please, fill all required fields!
+  </small>
+  <div class="text-center bg-white mt-3 rounded"
+     *ngIf="isSubmitted"
+  >
+    <h3 class="list-group">Your values</h3>
+    <ul class="list-group">
+      <li class="list-group-item">
+        Name: {{ userData.name }}
+      </li>
+      <li class="list-group-item">
+        Email: {{ userData.email }}
+      </li>
+      <li class="list-group-item">
+        Password: {{ userData.password }}
+      </li>
+      <li class="list-group-item">
+        Title: {{ userData.survey }}
+      </li>
+    </ul>
+  </div>
+</div>
