@@ -22,12 +22,13 @@ export class AppComponent {
 
   onSubmit() {
     this.isSubmitted = true;
+    const {name, email, password, survey } = {...this.form.value};
 
     this.userData = {
-      name: this.form.value.name,
-      email: this.form.value.email,
-      password: this.form.value.password,
-      survey: this.form.value.survey
+      name,
+      email,
+      password,
+      survey
     };
     this.form.reset();
   }
