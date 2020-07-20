@@ -1,111 +1,143 @@
 <div class="container mb-2">
   <h1 class="text-center">Forms validation in Angular</h1>
-  <form (ngSubmit)="onSubmit()" #form="ngForm">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <!--Name block-->
     <div class="form-group">
       <label for="name">User name</label>
       <input type="text"
              class="form-control"
              id="name"
              name="name"
-             ngModel
-             required
-             #name="ngModel"
-             [ngStyle]="{'border': name.valid && name.touched && name.value.length < 3 ? '1px solid red': null}"
+             formControlName="name"
       >
-      <!--Text for invalid name-->
+      <!--Text error for invalid name-->
       <small class="text-danger"
-             *ngIf="name.invalid && name.touched && name.value.length <= 0"
+             *ngIf="isEmptyName"
       >
-        Name can not be empty string!
+        Name is not valid!
       </small>
-      <!--Text for valid but very short name-->
+      <!--Text error for short name-->
       <small class="text-danger"
-             *ngIf="name.valid && name.touched && name.value.length < 3"
+             *ngIf="name.errors && name.errors.minlength"
       >
-        Name is  very short.
+        Name is a very short {{ name.errors.minlength.actualLength }} characters.
+        It should be no less than {{ name.errors.minlength.requiredLength }} characters.
+      </small>
+      <!--Text for forbidden name-->
+      <small class="text-danger"
+             *ngIf="name.errors && name.errors.forbidden"
+      >
+        The name {{ name.value.toUpperCase() }} is forbidden!
       </small>
     </div>
+
+    <!--Email block-->
     <div class="form-group">
       <label for="email">Email address</label>
       <input type="email"
              class="form-control"
              id="email"
              name="email"
-             ngModel
-             required
-             email
-             #email="ngModel"
+             formControlName="email"
       >
-      <!--Text for invalid email-->
+      <!--Text error for invalid email-->
       <small class="text-danger"
              *ngIf="email.invalid && email.touched"
       >
         Email is invalid!
       </small>
     </div>
+
+    <!--Password block-->
     <div class="form-group">
       <label for="password">Password</label>
       <input type="password"
              class="form-control"
              id="password"
              name="password"
-             ngModel
-             required
-             #password="ngModel"
-             [ngStyle]="{'border': password.valid && password.touched && password.value.length < 6 ? '1px solid red' : null}"
+             formControlName="password"
       >
-      <!--Text for invalid password-->
-      <small class="text-danger"
-             *ngIf="password.invalid && password.touched"
-      >
-        Password is invalid!
-      </small>
-      <!--Text for password which has less than 6 characters length-->
-      <small class="text-danger"
-             *ngIf="password.valid && password.touched && password.value.length < 6"
-      >
-        Password should have no less than 6 characters!
-      </small>
+
+      <!--Text error for invalid password-->
+      <div *ngIf="password.invalid && password.touched">
+        <small class="text-danger"
+               *ngIf="password.errors.required"
+        >
+          Password is invalid!
+        </small>
+
+        <!--Text error for password which has less than required characters length-->
+        <small class="text-danger"
+               *ngIf="isPasswordShort"
+        >
+          Password should have no less than {{ password.errors.minlength.requiredLength }} characters!
+          Current length is - {{ password.errors.minlength.actualLength }} characters.
+        </small>
+      </div>
     </div>
 
+    <!--Survey block-->
     <div class="form-group">
       <label for="survey">Select your job title</label>
       <select class="form-control"
               id="survey"
               name="survey"
-              [ngModel]="defaultTitle"
-              required
-              #select='ngModel'
+              formControlName="survey"
       >
         <option value="student">Student</option>
         <option value="junior">Junior</option>
         <option value="middle">Middle</option>
 
       </select>
-      <!--Text for invalid select-->
+      <!--Text error for invalid select-->
       <small class="text-danger"
-             *ngIf="select.invalid && select.touched"
+             *ngIf="survey.invalid && survey.touched"
       >
         Select is invalid!
       </small>
     </div>
+    <!--Add skill button-->
+    <div class="form-group border p-2" formArrayName="skills">
+      <div class="text-center font-weight-bold">Please, add your skills</div>
+      <button class="btn btn-success"
+              (click)="addSkill()"
+              type="button"
+      >
+        Add skill
+      </button>
+      <!--List skills-->
+      <ul class="list-group">
+        <li class="list-group-item"
+            *ngFor="let control of controls; let idx = index"
+        >
+          <label>
+            Your skill: {{ idx + 1}}
+            <input type="text"
+                   class="form-control"
+                   [formControlName]="idx">
+          </label>
+        </li>
+      </ul>
+    </div>
     <!--Submit button-->
     <button type="submit"
             class="btn btn-primary"
-            [disabled]="form.invalid || (form.invalid && form.touched)"
+            [disabled]="form.invalid || form.pending"
     >
       Send</button>
   </form>
 
   <!--Text for invalid form-->
-  <small class="text-danger pt-2" *ngIf="form.invalid && form.touched">
+  <small class="text-danger pt-2"
+         *ngIf="form.invalid && form.touched"
+  >
     Sorry, you can not send form, because it's invalid.
     Please, fill all required fields!
   </small>
   <div class="text-center bg-white mt-3 rounded"
      *ngIf="isSubmitted"
   >
-    <h3 class="list-group">Your values</h3>
+    <h3 class="list-group">Form values</h3>
     <ul class="list-group">
       <li class="list-group-item">
         Name: {{ userData.name }}
@@ -118,6 +150,19 @@
       </li>
       <li class="list-group-item">
         Title: {{ userData.survey }}
+      </li>
+      <!--List skills-->
+      <li class="list-group-item">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <h4>List skills</h4>
+          </li>
+          <li class="list-group-item"
+              *ngFor="let skill of userData.skills"
+          >
+            Your skill is: {{ skill }}
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
