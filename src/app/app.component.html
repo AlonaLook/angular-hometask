@@ -1,130 +1,57 @@
-<div class="container mb-2">
-  <h1 class="text-center">Forms validation in Angular</h1>
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
-    <!--Name block-->
+<section class="container mb-2">
+  <h1 class="text-center">HTTP Client</h1>
+  <form (ngSubmit)="addPost()" [formGroup]="form">
+    <!--Title block-->
     <div class="form-group">
-      <label for="name">User name</label>
+      <label for="title">Title post</label>
       <input type="text"
              class="form-control"
-             id="name"
-             name="name"
-             formControlName="name"
+             id="title"
+             name="title"
+             formControlName="title"
       >
-      <!--Text error for invalid name-->
+      <!--Text error for invalid title-->
       <small class="text-danger"
-             *ngIf="isEmptyName"
+             *ngIf="isEmptyTitle"
       >
-        Name is not valid!
+        Title is not valid!
       </small>
-      <!--Text error for short name-->
+      <!--Text error for title name-->
       <small class="text-danger"
-             *ngIf="name.errors && name.errors.minlength"
+             *ngIf="title.errors && title.errors.minlength"
       >
-        Name is a very short {{ name.errors.minlength.actualLength }} characters.
-        It should be no less than {{ name.errors.minlength.requiredLength }} characters.
-      </small>
-      <!--Text for forbidden name-->
-      <small class="text-danger"
-             *ngIf="name.errors && name.errors.forbidden"
-      >
-        The name {{ name.value.toUpperCase() }} is forbidden!
+        Name is a very short {{ title.errors.minlength.actualLength }} characters.
+        It should be no less than {{ title.errors.minlength.requiredLength }} characters.
       </small>
     </div>
 
-    <!--Email block-->
+    <!--Comment block-->
     <div class="form-group">
-      <label for="email">Email address</label>
-      <input type="email"
-             class="form-control"
-             id="email"
-             name="email"
-             formControlName="email"
-      >
-      <!--Text error for invalid email-->
+      <label for="comment">Comment post</label>
+      <textarea
+          type="text"
+          rows="3"
+          class="form-control"
+          id="comment"
+          name="comment"
+          formControlName="comment"
+      ></textarea>
+      <!--Text error for invalid comment-->
       <small class="text-danger"
-             *ngIf="email.invalid && email.touched"
+             *ngIf="comment.invalid && comment.touched"
       >
-        Email is invalid!
+        Comment is invalid!
       </small>
     </div>
 
-    <!--Password block-->
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password"
-             class="form-control"
-             id="password"
-             name="password"
-             formControlName="password"
-      >
-
-      <!--Text error for invalid password-->
-      <div *ngIf="password.invalid && password.touched">
-        <small class="text-danger"
-               *ngIf="password.errors.required"
-        >
-          Password is invalid!
-        </small>
-
-        <!--Text error for password which has less than required characters length-->
-        <small class="text-danger"
-               *ngIf="isPasswordShort"
-        >
-          Password should have no less than {{ password.errors.minlength.requiredLength }} characters!
-          Current length is - {{ password.errors.minlength.actualLength }} characters.
-        </small>
-      </div>
-    </div>
-
-    <!--Survey block-->
-    <div class="form-group">
-      <label for="survey">Select your job title</label>
-      <select class="form-control"
-              id="survey"
-              name="survey"
-              formControlName="survey"
-      >
-        <option value="student">Student</option>
-        <option value="junior">Junior</option>
-        <option value="middle">Middle</option>
-
-      </select>
-      <!--Text error for invalid select-->
-      <small class="text-danger"
-             *ngIf="survey.invalid && survey.touched"
-      >
-        Select is invalid!
-      </small>
-    </div>
-    <!--Add skill button-->
-    <div class="form-group border p-2" formArrayName="skills">
-      <div class="text-center font-weight-bold">Please, add your skills</div>
-      <button class="btn btn-success"
-              (click)="addSkill()"
-              type="button"
-      >
-        Add skill
-      </button>
-      <!--List skills-->
-      <ul class="list-group">
-        <li class="list-group-item"
-            *ngFor="let control of controls; let idx = index"
-        >
-          <label>
-            Your skill: {{ idx + 1}}
-            <input type="text"
-                   class="form-control"
-                   [formControlName]="idx">
-          </label>
-        </li>
-      </ul>
-    </div>
     <!--Submit button-->
     <button type="submit"
             class="btn btn-primary"
             [disabled]="form.invalid || form.pending"
     >
-      Send</button>
+      Send Post</button>
+    <!--Delete all posts button-->
+    <button class="btn btn-danger" (click)="deletePosts()">Delete all posts</button>
   </form>
 
   <!--Text for invalid form-->
@@ -134,36 +61,37 @@
     Sorry, you can not send form, because it's invalid.
     Please, fill all required fields!
   </small>
-  <div class="text-center bg-white mt-3 rounded"
-     *ngIf="isSubmitted"
-  >
-    <h3 class="list-group">Form values</h3>
-    <ul class="list-group">
-      <li class="list-group-item">
-        Name: {{ userData.name }}
-      </li>
-      <li class="list-group-item">
-        Email: {{ userData.email }}
-      </li>
-      <li class="list-group-item">
-        Password: {{ userData.password }}
-      </li>
-      <li class="list-group-item">
-        Title: {{ userData.survey }}
-      </li>
-      <!--List skills-->
-      <li class="list-group-item">
-        <ul class="list-group">
-          <li class="list-group-item">
-            <h4>List skills</h4>
-          </li>
-          <li class="list-group-item"
-              *ngFor="let skill of userData.skills"
-          >
-            Your skill is: {{ skill }}
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </div>
+</section>
+<!--Error request block-->
+<div class="text-danger container"
+     *ngIf="error; else content"
+>
+  {{ error }}
 </div>
+<ng-template #content>
+  <section class="container" *ngIf="!isLoaded; else loader">
+    <!--List of posts-->
+    <div>
+      <ul class="list-group" *ngIf="posts.length > 0; else nothingToShowBlock">
+        <li class="list-group-item" *ngFor="let post of posts">
+          <h4 class="text-capitalize">
+            {{ post.title }}
+          </h4>
+          <div class="text-capitalize font-weight-bold">
+            {{ post.comment }}
+          </div>
+        </li>
+      </ul>
+    </div>
+    <ng-template #nothingToShowBlock>
+      <p class="border bg-white">
+        There is no one post yet.
+      </p>
+    </ng-template>
+  </section>
+  <ng-template #loader>
+    <div class="container">
+      <div class="loader"></div>
+    </div>
+  </ng-template>
+</ng-template>

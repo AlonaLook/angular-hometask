@@ -1,14 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {CustomValidator} from '../validators/custom.validator';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {IPost} from '../interfases/post.interface';
+import {PostService} from './services/post.service';
 
-export interface IUserData {
-  name: string;
-  email: string;
-  password: string;
-  survey: string;
-  skills: string[];
-}
+
 
 @Component({
   selector: 'app-root',
@@ -17,70 +12,74 @@ export interface IUserData {
 })
 export class AppComponent implements OnInit {
   form: FormGroup;
+  post: IPost;
+  posts: IPost[] = [];
+  isLoaded = false;
+  error = '';
 
-  defaultTitle = 'middle';
-  isSubmitted = false;
-  userData: IUserData;
+  constructor(private postService: PostService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      name: new FormControl('', [
+      title: new FormControl('', [
         Validators.required,
-        Validators.minLength(3),
-        CustomValidator.prohibitedValue.bind(this)
-      ],
-        CustomValidator.anotherProhibitedValue.bind(this)
-      ),
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email
+        Validators.minLength(3)
       ]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4)
-      ]),
-      survey: new FormControl(this.defaultTitle, Validators.required),
-      skills: new FormArray([])
+      comment: new FormControl('', [
+        Validators.required
+      ])
     });
+
+    this.getPosts();
   }
 
-  get controls() {
-    return (this.form.get('skills') as FormArray).controls;
+  get title() {
+    return this.form.get('title');
   }
 
-  get name() {
-    return this.form.get('name');
+  get isEmptyTitle() {
+    return this.title.errors && this.title.errors.required && this.title.touched;
   }
 
-  get isEmptyName() {
-    return this.name.errors && this.name.errors.required && this.name.touched;
+  get comment() {
+    return this.form.get('comment');
+  }
+  getPosts() {
+    this.isLoaded = true;
+
+    this.postService.fetchData().subscribe(posts => {
+      this.isLoaded = false;
+      this.posts = [...posts];
+    },
+      (err) => {
+      this.error = err.message;
+      });
   }
 
-  get email() {
-    return this.form.get('email');
-  }
+  addPost() {
+    this.isLoaded = true;
 
-  get password() {
-    return this.form.get('password');
-  }
-
-  get isPasswordShort() {
-    return this.password.errors.minlength && this.password.errors.minlength.actualLength < this.password.errors.minlength.requiredLength;
-  }
-  get survey() {
-    return this.form.get('survey');
-  }
-
-  onSubmit() {
-    this.isSubmitted = true;
-    this.userData = {...this.form.value};
-    console.log('data', this.userData);
+    this.post = {
+      title: this.title.value,
+      comment: this.comment.value
+    };
+    this.postService.postData(this.post).subscribe(() => {
+      this.getPosts();
+    }, (err) => {
+      this.error = err.message;
+    });
     this.form.reset();
   }
 
-
-  addSkill() {
-    const control = new FormControl('', Validators.required);
-    (this.form.get('skills') as FormArray).push(control);
+  deletePosts() {
+    this.isLoaded = true;
+    this.postService.deleteAllData().subscribe(() => {
+      this.postService.fetchData().subscribe(() => {
+        this.isLoaded = false;
+        this.posts = [];
+      });
+    }, (err) => {
+      this.error = err.message;
+    });
   }
 }
