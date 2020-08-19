@@ -1,0 +1,25 @@
+<div
+  class="jumbotron ml-2"
+>
+  <div class="form-group">
+    <label for="title">Name:</label>
+    <input
+      type="text"
+      id="title"
+      class="form-control"
+      [(ngModel)]="title"
+    >
+  </div>
+  <div class="form-group">
+    <label for="count">Count:</label>
+    <input
+      type="text"
+      id="count"
+      class="form-control"
+      [(ngModel)]="count"
+    >
+  </div>
+  <div>
+    <button class="btn btn-primary" (click)="updateChanges()">Save</button>
+  </div>
+</div>

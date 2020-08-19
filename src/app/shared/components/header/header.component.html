@@ -1,0 +1,42 @@
+<header class="bg-dark pt-2 pb-2 mb-4">
+  <div class="container row align-items-center justify-content-between">
+    <nav>
+      <ul class="nav nav-pills">
+        <li
+          class="nav-item"
+        >
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}"
+            class="nav-link"
+          >
+            Home
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            [routerLink]="['/shopping']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            Shopping
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="text-right">
+      <button
+        *ngIf="authService.isAuth"
+        class="btn btn-light"
+        (click)="logout()"
+      >Logout
+      </button>
+    </div>
+  </div>
+</header>
+
+
+
