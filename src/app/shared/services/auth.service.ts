@@ -20,7 +20,7 @@ export class AuthService {
     const expDate = new Date(localStorage.getItem('tokenExpDate'));
     const today = new Date();
 
-    if (today > expDate) {
+    if (!expDate || today > expDate) {
       this.logout();
       return null;
     }
