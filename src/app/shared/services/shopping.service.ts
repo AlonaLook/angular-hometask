@@ -1,27 +1,24 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {IPurchase} from '../interfaces/purchase.interface';
-import {LoggingService} from './logging.service';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+
+// Services
+import {LoggingService} from './logging.service';
+
+// Environment
 import {environment} from '../../../environments/environment';
-const DbUrl = `${environment.fbDbUrl}/purchases.json`;
+
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingService {
-  listPurchases: IPurchase[] = [
-    {id: 1, title: 'Milk', count: 1, isEdited: false},
-    {id: 2, title: 'Bread', count: 2, isEdited: false},
-    {id: 3, title: 'Orange', count: 5, isEdited: false},
-    {id: 4, title: 'Tomato', count: 3, isEdited: false},
-    {id: 5, title: 'Pasta', count: 15, isEdited: false},
-  ];
 
   constructor(private loggingService: LoggingService, private http: HttpClient) {}
 
   createPurchase(purchase: IPurchase): Observable<IPurchase> {
-    return this.http.post<IPurchase>(DbUrl, purchase)
+    return this.http.post<IPurchase>(`${environment.fbDbUrl}/purchases.json`, purchase)
       .pipe(
         tap(res => {
           return {
@@ -33,7 +30,7 @@ export class ShoppingService {
   }
 
   getPurchases(): Observable<IPurchase[]> {
-    return this.http.get<IPurchase[]>(DbUrl)
+    return this.http.get<IPurchase[]>(`${environment.fbDbUrl}/purchases.json`)
       .pipe(
         map(response => {
           const array = [];
@@ -50,22 +47,15 @@ export class ShoppingService {
       );
   }
 
-  searchItem(id: string) {
-    return this.listPurchases.find(purchase => purchase.id === id);
+  removeItemById(id: string): Observable<void> {
+    return this.http.delete<void>(`${environment.fbDbUrl}/purchases/${id}.json`);
   }
 
-  getIndexById(id: string) {
-    return this.listPurchases.reduce((acc, curValue, index) => {
-      return curValue.id === id ? (acc + index) : acc;
-    }, 0);
+  getItemById(id: string): Observable<IPurchase> {
+    return this.http.get<IPurchase>(`${environment.fbDbUrl}/purchases/${id}.json`);
   }
 
-  updateItem(id: string, title: string, count: number) {
-    this.listPurchases = this.listPurchases.reduce( (acc, curVal) => {
-      const item = curVal.id === id
-        ?  { ...curVal, title, count }
-        : curVal;
-      return [...acc, item];
-    }, []);
+  update(purchase: IPurchase): Observable<IPurchase> {
+    return this.http.patch<IPurchase>(`${environment.fbDbUrl}/purchases/${purchase.id}.json`, purchase);
   }
 }

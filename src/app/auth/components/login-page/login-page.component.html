@@ -1,64 +1,74 @@
 <div class="border p-4 bg-white rounded" *ngIf="!errorMessage; else errorBlock">
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <div
-      class="form-group"
-      [ngClass]="{ 'text-danger': emailInvalidAndTouched }"
-    >
-      <label for="email">Email:</label>
-      <input
-        formControlName="email"
-        [ngClass]="{ 'error': emailInvalidAndTouched }"
-        id="email"
-        type="email"
-        class="form-control w-100"
-        placeholder="Enter your email..."
+  <div *ngIf="!isLoading">
+    <app-spinner></app-spinner>
+  </div>
+    <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="!isLoading">
+      <div
+        class="form-group"
+        [ngClass]="{ 'text-danger': emailInvalidAndTouched }"
       >
-      <small
-        *ngIf="emailInvalidAndTouched"
-        class="form-text text-danger"
-      >Sorry, your email is invalid
-      </small>
-    </div>
-    <div
-      class="form-group"
-      [ngClass]="{ 'text-danger': passwordInvalidAndTouched }"
-    >
-      <label for="password">Password:</label>
-      <input
-        formControlName="password"
-        [ngClass]="{ 'error': passwordInvalidAndTouched }"
-        id="password"
-        type="password"
-        class="form-control w-100"
-        placeholder="Enter your password..."
-      >
-      <div *ngIf="passwordInvalidAndTouched">
-        <small
-          *ngIf="password.errors.required"
-          class="form-text text-danger"
+        <label for="email">Email:</label>
+        <input
+          formControlName="email"
+          [ngClass]="{ 'error': emailInvalidAndTouched }"
+          id="email"
+          type="email"
+          class="form-control w-100"
+          placeholder="Enter your email..."
         >
-          Sorry, your password shouldn't be empty!
-        </small>
         <small
-          *ngIf="password.errors.minlength"
+          *ngIf="emailInvalidAndTouched"
           class="form-text text-danger"
-        >
-          Sorry, your password is very short - {{ password.errors.minlength.actualLength }}!
-          Should be - {{ password.errors.minlength.requiredLength }}
-
+        >Sorry, your email is invalid
         </small>
       </div>
-    </div>
-    <button
-      [disabled]="form.invalid || formIsSubmitted"
-      type="submit" class="btn btn-primary"
-    >
-      Login
-    </button>
-  </form>
-</div>
-<ng-template #errorBlock>
-  <p class="alert alert-danger">
-    Sorry, we faced with an error: {{ errorMessage }}
-  </p>
-</ng-template>
+      <div
+        class="form-group"
+        [ngClass]="{ 'text-danger': passwordInvalidAndTouched }"
+      >
+        <label for="password">Password:</label>
+        <input
+          formControlName="password"
+          [ngClass]="{ 'error': passwordInvalidAndTouched }"
+          id="password"
+          type="password"
+          class="form-control w-100"
+          placeholder="Enter your password..."
+        >
+        <div *ngIf="passwordInvalidAndTouched">
+          <small
+            *ngIf="password.errors.required"
+            class="form-text text-danger"
+          >
+            Sorry, your password shouldn't be empty!
+          </small>
+          <small
+            *ngIf="password.errors.minlength"
+            class="form-text text-danger"
+          >
+            Sorry, your password is very short - {{ password.errors.minlength.actualLength }}!
+            Should be - {{ password.errors.minlength.requiredLength }}
+
+          </small>
+        </div>
+      </div>
+      <button
+        [disabled]="form.invalid || formIsSubmitted"
+        type="submit" class="btn btn-primary"
+      >
+        {{ isLogin ? 'Login' : 'Sign Up' }}
+      </button>
+      <button
+        type="button" (click)="isLogin = !isLogin"
+        class="btn btn-outline-success ml-2"
+      >
+        Switch mode
+      </button>
+    </form>
+  </div>
+  <ng-template #errorBlock>
+    <p class="alert alert-danger">
+      Sorry, we faced with an error: {{ errorMessage }}
+    </p>
+  </ng-template>
+

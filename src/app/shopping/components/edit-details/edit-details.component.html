@@ -1,25 +1,52 @@
-<div
-  class="jumbotron ml-2"
->
-  <div class="form-group">
-    <label for="title">Name:</label>
-    <input
-      type="text"
-      id="title"
-      class="form-control"
-      [(ngModel)]="title"
+<div *ngIf="form; else spinner">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div
+      class="form-group"
+      [ngClass]="{ 'text-danger': emailInvalidAndTouched }"
     >
-  </div>
-  <div class="form-group">
-    <label for="count">Count:</label>
-    <input
-      type="text"
-      id="count"
-      class="form-control"
-      [(ngModel)]="count"
+      <label for="title">Title:</label>
+      <input
+        formControlName="title"
+        [ngClass]="{ 'error': titleInvalidAdnTouched }"
+        id="title"
+        type="text"
+        class="form-control w-100"
+        placeholder="New title is here..."
+      >
+      <small
+        *ngIf="titleInvalidAdnTouched"
+        class="form-text text-danger"
+      >Sorry, your title is invalid
+      </small>
+    </div>
+    <div
+      class="form-group"
+      [ngClass]="{ 'text-danger': countInvalidAdnTouched }"
     >
-  </div>
-  <div>
-    <button class="btn btn-primary" (click)="updateChanges()">Save</button>
-  </div>
+      <label for="count">Count:</label>
+      <input
+        formControlName="count"
+        [ngClass]="{ 'error': countInvalidAdnTouched }"
+        id="count"
+        type="text"
+        class="form-control w-100"
+        placeholder="New count is here..."
+      >
+      <small
+        *ngIf="countInvalidAdnTouched"
+        class="form-text text-danger"
+      >Sorry, your count is invalid
+      </small>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-outline-primary"
+      [disabled]="form.invalid"
+    >
+      Update
+    </button>
+  </form>
 </div>
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

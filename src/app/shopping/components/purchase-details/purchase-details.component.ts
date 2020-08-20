@@ -10,17 +10,14 @@ import {IPurchase} from '../../../shared/interfaces/purchase.interface';
 })
 export class PurchaseDetailsComponent implements OnInit {
   purchase: IPurchase;
-  idx: number;
 
   constructor(private route: ActivatedRoute, private shoppingService: ShoppingService) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe((params: Params) => {
-      this.purchase = params.purchase;
-    });
     this.route.params.subscribe((params: Params) => {
-      const id: number = Number(params.id);
-      this.idx = this.shoppingService.getIndexById(id);
+      this.shoppingService.getItemById(params.id).subscribe((purchase) => {
+       this.purchase = purchase;
+     });
     });
   }
 

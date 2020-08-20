@@ -1,21 +1,30 @@
-<div class="text text-right mb-2">
-  <button [routerLink]="['add']" class="btn btn-outline-info">Add purchase</button>
-</div>
-<div class="row justify-content-between">
-  <ul class="list-group pb-2 flex-grow-1">
-    <li
-      class="list-group-item"
-      *ngFor="let purchase of purchases"
-    >
-      <a
-        class="nav-link"
-        [routerLink]="['/shopping', purchase.id]"
+<div *ngIf="purchases.length; else spinner">
+  <div class="text text-right mb-2">
+    <button [routerLink]="['add']" class="btn btn-outline-info">Add purchase</button>
+  </div>
+  <div class="row justify-content-between">
+    <ul class="list-group pb-2 flex-grow-1">
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+        *ngFor="let purchase of purchases"
       >
-        {{ purchase.title }} {{ purchase.count }} {{+purchase.count === 1 ? 'item' : 'items'}}
-      </a>
-    </li>
-  </ul>
-
-  <router-outlet></router-outlet>
+        <a
+          class="nav-link"
+          [routerLink]="['/shopping', purchase.id]"
+        >
+          {{ purchase.title }} {{ purchase.count }} {{+purchase.count === 1 ? 'item' : 'items'}}
+        </a>
+        <button class="btn btn-danger" (click)="remove(purchase.id)">Remove</button>
+      </li>
+    </ul>
+    <div class="jumbotron p-0">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>
+
 

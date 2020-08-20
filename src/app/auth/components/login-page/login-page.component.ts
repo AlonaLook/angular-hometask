@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+
+// Interfaces
 import {IUser} from '../../../shared/interfaces/user.interface';
+
+// Services
 import {AuthService} from '../../../shared/services/auth.service';
 
 @Component({
@@ -13,6 +17,8 @@ export class LoginPageComponent implements OnInit {
   form: FormGroup;
   formIsSubmitted = false;
   errorMessage: any;
+  isLogin = false;
+  isLoading = false;
 
   constructor(private authService: AuthService, private router: Router) {
   }
@@ -46,22 +52,35 @@ export class LoginPageComponent implements OnInit {
   }
 
   submit() {
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.isLoading = true;
     this.formIsSubmitted = true;
+
     const newUser: IUser = {
       email: this.email.value,
       password: this.password.value
     };
+    if (this.isLogin) {
+      this.authService
+        .login(newUser)
+        .subscribe(() => {
+            this.formIsSubmitted = false;
+            this.isLoading = false;
+            this.router.navigate(['/shopping']);
+          },
+          (err) => {
+            this.errorMessage = err.error.error.message;
+          });
+    }
 
-    this.authService
-      .login(newUser)
-      .subscribe(() => {
-        this.formIsSubmitted = false;
-        this.form.reset();
-        this.router.navigate(['/']);
-      },
-        (err) => {
-          this.errorMessage = err.error.error.message;
-        });
+    this.authService.signUp(newUser).subscribe(() => {
+      this.formIsSubmitted = false;
+      this.isLoading = false;
+      this.router.navigate(['/']);
+    });
+    this.form.reset();
   }
-
 }

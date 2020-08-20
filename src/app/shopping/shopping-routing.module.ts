@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 // Services
-import {PurchaseResolverService} from '../shared/services/purchase-resolver.service';
 import {CanDeactivateGuardService} from '../shared/services/guards/can-deactivate-guard.service';
 
 // Components
@@ -22,12 +21,11 @@ const routes: Routes = [
         path: '',
         component: ShoppingListComponent,
         children: [
-          { path: ':id', component: PurchaseDetailsComponent, resolve: { purchase: PurchaseResolverService } },
+          { path: ':id', component: PurchaseDetailsComponent },
           {
             path: ':id/edit',
             component: EditDetailsComponent,
-            canDeactivate: [CanDeactivateGuardService],
-            resolve: {purchase: PurchaseResolverService}
+            canDeactivate: [CanDeactivateGuardService]
           }
         ]
       }

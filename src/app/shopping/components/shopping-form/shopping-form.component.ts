@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-
-import {ShoppingService} from '../../../shared/services/shopping.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+
+// Services
+import {ShoppingService} from '../../../shared/services/shopping.service';
+
+// Interfaces
 import {IPurchase} from '../../../shared/interfaces/purchase.interface';
 
 @Component({

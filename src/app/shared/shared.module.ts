@@ -1,15 +1,19 @@
 import {NgModule} from '@angular/core';
-import {ContainerComponent} from './components/container/container.component';
-import {HeaderComponent} from './components/header/header.component';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
+
+// Components
+import {ContainerComponent} from './components/container/container.component';
+import {HeaderComponent} from './components/header/header.component';
+import {SpinnerComponent} from './components/spinner/spinner.component';
 
 
 @NgModule({
   declarations: [
     ContainerComponent,
-    HeaderComponent
+    HeaderComponent,
+    SpinnerComponent
   ],
   imports: [
     CommonModule,

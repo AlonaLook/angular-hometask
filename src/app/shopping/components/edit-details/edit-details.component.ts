@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {IPurchase} from '../../../shared/interfaces/purchase.interface';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+
+// Interfaces
+import {IPurchase} from '../../../shared/interfaces/purchase.interface';
+
+// Services
 import {ShoppingService} from '../../../shared/services/shopping.service';
 import {CanComponentDeactivate} from '../../../shared/services/guards/can-component-deactivate.interface';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-edit-details',
@@ -12,30 +17,57 @@ import {Observable} from 'rxjs';
 })
 export class EditDetailsComponent implements OnInit, CanComponentDeactivate {
   purchase: IPurchase;
-  title: string;
-  count: string;
-
+  form: FormGroup;
 
   constructor( private route: ActivatedRoute, private shoppingService: ShoppingService, private router: Router) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe((params: Params) => {
-      this.purchase = params.purchase;
-      this.title = this.purchase.title;
-      this.count = String(this.purchase.count);
+    this.route.params.subscribe((params: Params) => {
+      this.shoppingService.getItemById(params.id).subscribe(purchase => {
+        this.purchase = purchase;
+        this.form = new FormGroup({
+          title: new FormControl(purchase.title, Validators.required),
+          count: new FormControl(purchase.count, [Validators.required, Validators.pattern('[0-9]+')])
+        });
+      });
     });
   }
+  get title() {
+    return this.form.get('title');
+  }
+  get count() {
+    return this.form.get('count');
+  }
 
-  updateChanges() {
-    this.shoppingService.updateItem(this.purchase.id, this.title, +this.count);
-    this.router.navigate(['../'], {relativeTo: this.route, preserveQueryParams: true});
+  get titleInvalidAdnTouched() {
+    return this.title.invalid && this.title.touched;
+  }
+  get countInvalidAdnTouched() {
+    return this.count.invalid && this.count.touched;
   }
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-    const { title, count } = this.purchase;
-    if (title !== this.title || count !== +this.count) {
-      return confirm('Do you want leave the page?');
+    if (this.purchase) {
+      const { title: newTitle, count: newCount } = this.purchase;
+      if (newTitle !== this.title.value || newCount !== +this.count.value) {
+        return confirm('Do you want leave the page?');
+      }
     }
     return true;
+  }
+
+  submit() {
+    if (this.form.invalid)  {
+      return;
+    }
+
+    this.shoppingService.update({
+      id: this.purchase.id,
+      title: this.title.value,
+      count: this.count.value
+    }).subscribe((purchase) => {
+      this.purchase = purchase;
+      this.router.navigate(['/'], {relativeTo: this.route, preserveQueryParams: true});
+    });
   }
 }

@@ -1,8 +1,12 @@
 import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
+
+// Services
+import {AuthGuard} from './shared/services/guards/auth-guard.service';
+
+// Components
 import {NotFoundComponent} from './not-found/not-found.component';
 import {ContainerComponent} from './shared/components/container/container.component';
-import {AuthGuard} from './shared/services/guards/auth-guard.service';
 import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [

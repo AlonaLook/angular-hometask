@@ -6,7 +6,4 @@ import {Component} from '@angular/core';
   styleUrls: ['./shopping.component.scss']
 })
 export class ShoppingComponent {
-
-  constructor(
-  ) {}
 }

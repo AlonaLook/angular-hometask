@@ -1,9 +1,13 @@
 import {NgModule} from '@angular/core';
-import {AuthComponent} from './components/auth/auth.component';
-import {RouterModule, Routes} from '@angular/router';
 import {CommonModule} from '@angular/common';
-import {LoginPageComponent} from './components/login-page/login-page.component';
+import {RouterModule, Routes} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
+// Components
+import {AuthComponent} from './components/auth/auth.component';
+import {LoginPageComponent} from './components/login-page/login-page.component';
+
+// Modules
 import {SharedModule} from '../shared/shared.module';
 
 const routes: Routes = [
