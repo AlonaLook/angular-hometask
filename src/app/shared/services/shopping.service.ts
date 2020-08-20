@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import {IPurchase} from '../interfaces/purchase.interface';
 import {LoggingService} from './logging.service';
-
+import {Observable, throwError} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
+const DbUrl = `${environment.fbDbUrl}/purchases.json`;
 @Injectable({
   providedIn: 'root'
 })
@@ -14,30 +18,49 @@ export class ShoppingService {
     {id: 5, title: 'Pasta', count: 15, isEdited: false},
   ];
 
-  constructor(private loggingService: LoggingService) {}
+  constructor(private loggingService: LoggingService, private http: HttpClient) {}
 
-  addPurchase(title: string, count: number) {
-    if (title.trim() && count) {
-      this.loggingService.log('You add', title);
-
-      this.listPurchases = [
-        {title, count, id: Date.now(), isEdited: false},
-        ...this.listPurchases
-      ];
-    }
+  createPurchase(purchase: IPurchase): Observable<IPurchase> {
+    return this.http.post<IPurchase>(DbUrl, purchase)
+      .pipe(
+        tap(res => {
+          return {
+            ...purchase,
+            id: res.name
+          };
+        })
+      );
   }
 
-  searchItem(id: number) {
+  getPurchases(): Observable<IPurchase[]> {
+    return this.http.get<IPurchase[]>(DbUrl)
+      .pipe(
+        map(response => {
+          const array = [];
+          for (const key in response) {
+            if (response.hasOwnProperty(key)) {
+              array.push({...response[key], id: key});
+            }
+          }
+          return array;
+        }),
+        catchError(err => {
+          return throwError(err);
+        })
+      );
+  }
+
+  searchItem(id: string) {
     return this.listPurchases.find(purchase => purchase.id === id);
   }
 
-  getIndexById(id: number) {
+  getIndexById(id: string) {
     return this.listPurchases.reduce((acc, curValue, index) => {
       return curValue.id === id ? (acc + index) : acc;
     }, 0);
   }
 
-  updateItem(id: number, title: string, count: number) {
+  updateItem(id: string, title: string, count: number) {
     this.listPurchases = this.listPurchases.reduce( (acc, curVal) => {
       const item = curVal.id === id
         ?  { ...curVal, title, count }

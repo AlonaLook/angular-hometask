@@ -12,7 +12,7 @@ const authUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPa
   providedIn: 'root'
 })
 export class AuthService {
-  isAuth = false;
+  isAuth = true;
 
   constructor(private http: HttpClient) {}
 

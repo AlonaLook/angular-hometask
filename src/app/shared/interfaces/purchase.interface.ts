@@ -1,6 +1,6 @@
 export interface IPurchase {
   title: string;
   count: number;
-  id?: number;
+  id?: string;
   isEdited?: boolean;
 }

@@ -40,9 +40,14 @@ export class ShoppingFormComponent implements OnInit {
   }
 
   addPurchase() {
+    const { title, count } = this.form.controls;
     const purchase: IPurchase = {
-      title: this.title.value,
-      count: this.count.value
+      title: title.value,
+      count: count.value
     };
+    this.shoppingService.createPurchase(purchase).subscribe(() => {
+      this.form.reset();
+    });
+
   }
 }

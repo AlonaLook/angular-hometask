@@ -15,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    loadChildren: './auth/auth.module#AuthModule'
+    loadChildren: () => import('./auth/auth.module').then(module => module.AuthModule)
   },
   {
     path: 'shopping',
